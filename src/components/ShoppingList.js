@@ -5,20 +5,24 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [allItems, setAllItems] = useState(items);
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
   }
 
-  const itemsToDisplay = items.filter((item) => {
+  const itemsToDisplay = allItems.filter((item) => {
     if (selectedCategory === "All") return true;
-
     return item.category === selectedCategory;
   });
 
+  const handleItemFormSubmit = (newItem) => {
+    setAllItems([...allItems, newItem]);
+  };
+
   return (
     <div className="ShoppingList">
-      <ItemForm />
+      <ItemForm onItemFormSubmit={handleItemFormSubmit} />
       <Filter onCategoryChange={handleCategoryChange} />
       <ul className="Items">
         {itemsToDisplay.map((item) => (
